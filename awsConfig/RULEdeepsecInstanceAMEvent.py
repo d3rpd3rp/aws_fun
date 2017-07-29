@@ -16,7 +16,8 @@ def aws_config_rule_handler(event, context):
     instance_id = None
     has_policy = False
     detailed_msg = ""
-    keys = [ 'invokingEvent', 'ruleParameters', 'resultToken', 'eventLeftScope' ]
+    keys = [ 'invokingEvent', 'ruleParameters', 'resultToken', 'eventLeftScope',\
+    'resultToken']
     flag = False
     for key in keys:
         if key in event:
@@ -106,7 +107,7 @@ def aws_config_rule_handler(event, context):
                 if instance_id.lower().strip() == aws_id:
                     deepsec_manager_instance_id = host['ID']
                     print('the deepsec_manager_instance_id is: {}'.format(host['ID']))
-                    malware_event = deepsec_manager.antimalware_event_retreive(time_type = "LAST_24_HOURS", host_id = deepsec_manager_instance_id)
+                    malware_event = deepsec_manager.antimalware_event_retreive(time_type = "LAST_HOUR", host_id = deepsec_manager_instance_id)
                     #print('type of mal event {}.'.format(malware_event))
                     #logDate = 2017-07-29 00:21:14+00:00
                     #antiMalwareEvents = None 
@@ -147,13 +148,25 @@ def aws_config_rule_handler(event, context):
 			'ComplianceResourceId': event['invokingEvent']['configurationItem']['resourceId'],
 			'ComplianceType': compliance,
 			'OrderingTimestamp': datetime.datetime.now() }
-
+			
+        print('after evaluation assignment 1.')
+        
         if detailed_msg:
             evaluation['Annotation'] = detailed_msg
+            print('after evaluation assignment 2.')
+            
+        print(evaluation)
+        print('###')
+        print([evaluation])
+        print('###')
+        print(event['resultToken'])
 
         response = client.put_evaluations(
-            Evaluations=[evaluation],
+            Evaluations = [evaluation],
+            ResultToken = event['resultToken']
         )
+        
+        print('response creation.')
 
         result['result'] = 'success'
         result['response'] = response
