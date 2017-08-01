@@ -5,7 +5,7 @@ import datetime
 import json
 from urllib.parse import urlparse
 
-#Deep Security Python SDK by Jefft Thorne
+#Deep Security Python SDK by Jeff 'Big Dog' Thorne
 #https://github.com/jeffthorne/DSP3
 from dsp3.models.manager import Manager
 
