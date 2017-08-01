@@ -119,7 +119,7 @@ def aws_config_rule_handler(event, context):
                         malware_event = deepsec_manager.antimalware_event_retreive(time_type = "LAST_HOUR", host_id = host['ID'])
                         malware_event_str = str(malware_event)
                         if malware_event_str.find('antiMalwareEventID') != -1:
-                            detailed_msg = 'There exists a malware event on this system.'
+                            detailed_msg = 'There exists a malware event on this system within the last hour.'
                             print(detailed_msg)
                             break
                     except:
